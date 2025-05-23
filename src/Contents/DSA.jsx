@@ -1,10 +1,11 @@
 import "../App.css";
+import Score from "./Score";
 import { useState } from "react";
 
-function Quiz() {
+function DSA() {
   let questions = [
     {
-      question: "What is the conditio for staact underflow?",
+      question: "What is the condition for stack underflow?",
       answers: ["top=0", "top=1", "top=-1", "top=maxSize-1"],
       ans: "top=-1",
     },
@@ -96,41 +97,31 @@ function Quiz() {
     ans[qindex] = answer;
     setAnswer(ans);
   }
-  function reset() {
-    setAnswer(nullAnswers);
-    setScore("Sumit to know your Score");
-  }
-  let [finalScore, setScore] = useState("Sumit to know your Score");
+  let [checkAns, setCheckAns] = useState(questions);
+  let [finalScore, setScore] = useState();
   function answerCheck() {
+    let checkAnswer = [];
     let score = 0;
     for (let i = 0; i <= answerArr.length - 1; i++) {
       if (questions[i].ans === answerArr[i]) {
         score = score + 1;
+        checkAnswer.push(answerArr[i]);
       }
     }
-    setScore(`You Scored: ${score}`);
+    setCheckAns(checkAnswer);
+    setScore(score);
   }
 
   return (
     <>
-      <div className="top">
-        <h1>DSA MCQ Questions </h1>
-        <p>{finalScore}</p>
-        <div className="btnContainer">
-          <button
-            className={"btn"}
-            onClick={answerCheck}
-            disabled={answerArr.includes(null)}
-          >
+      <div className="rightContainer">
+        <div className="top">
+          {" "}
+          <h1>MCQ Question of DSA</h1>
+          <button className="btn" onClick={answerCheck}>
             Submit
           </button>
-          <button className="btn" onClick={reset}>
-            Reset
-          </button>
         </div>
-      </div>
-
-      <div className="questionContainer">
         {questions.map((item, qindex) => (
           <>
             <h2>
@@ -139,7 +130,9 @@ function Quiz() {
             <div className="buttonContainer">
               {item.answers.map((ans, aindex) => (
                 <button
-                  className={answerArr.includes(ans) ? "selected" : ""}
+                  className={`${answerArr[qindex] === ans ? "selected" : ""} ${
+                    !checkAns.includes(ans) ? "red" : ""
+                  }`}
                   onClick={() => handleClick(qindex, ans)}
                 >
                   <span className="color"> {aindex + 1}.</span> {ans}
@@ -149,8 +142,10 @@ function Quiz() {
           </>
         ))}
       </div>
+      <Score DSA={finalScore} />
+      {console.log(checkAns)}
     </>
   );
 }
 
-export default Quiz;
+export default DSA;
